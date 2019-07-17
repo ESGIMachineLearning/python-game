@@ -1,4 +1,5 @@
 import random
+import victorPilleur
 
 config = {
     "size":10,
@@ -9,8 +10,8 @@ config = {
 		5: 1
 	},
 	"ship_one_beside_other": False,
-	"aiPlayer1": "naive",
-	"aiPlayer2": "naive"
+	"aiPlayer1": "victorPilleur",
+	"aiPlayer2": "victorPilleur"
 }
 
 def initMap():
@@ -114,36 +115,44 @@ def numberAliveShips(currentShips):
 			i += 1
 	return i
 
+
+""" REGLE: A chaque tour, l'IA recoit uniquement sa gameMap et doit retourner un x,y de cible
+	Le game engine retournera à l'IA true si la cible est touché et false sinon
+	Le tour passera alors à l'adversaife """
+
+
 """
 Print the game and shot cases
 """
 
 def print_board(gameMapPlayer1, gameMapPlayer2):
+
 	print(" 0 1 2 3 4 5 6 7 8 9 || 0 1 2 3 4 5 6 7 8 9")
+
 	for row in range(config['size']):
 		print(gameMapPlayer1[row], end = ' || ')
 		print(gameMapPlayer2[row])
+
+
 
 def main():
 
 	shipsPlayer1, gameMapPlayer1 = initMap()
 	shipsPlayer2, gameMapPlayer2 = initMap()
-
+	IA1 = victorPilleur.VictorPilleur(config)
+	IA2 = victorPilleur.VictorPilleur(config)
+	shipsTouch1 = []
+	shipsTouch2 = []
 	playerTurn = True
 
 	while(True):
 
 		if (playerTurn):
 			
-			if (config['aiPlayer1'] == 'naive'):
-				
-				while True:
-					xShot = random.randint(0, config['size'] - 1)
-					yShot = random.randint(0, config['size'] - 1)
+			if (config['aiPlayer1'] == 'victorPilleur'):
 
-					if not gameMapPlayer2[xShot][yShot]:
-						break
-
+				xShot, yShot = IA1.controller(gameMapPlayer1)
+				IA1.transferAnswer(isShipPosition(xShot, yShot, shipsPlayer2))
 				gameMapPlayer2[xShot][yShot] = 1
 
 				if not isShipPosition(xShot, yShot, shipsPlayer2):
@@ -166,14 +175,11 @@ def main():
 					playerTurn = not playerTurn
 		else :
 				
-			if (config['aiPlayer2'] == 'naive'):
-				while True:
-					xShot = random.randint(0, config['size'] - 1)
-					yShot = random.randint(0, config['size'] - 1)
+			if (config['aiPlayer2'] == 'victorPilleur'):
+				
 
-					if not gameMapPlayer1[xShot][yShot]:
-						break
-
+				xShot, yShot = IA2.controller(gameMapPlayer1)
+				IA2.transferAnswer(isShipPosition(xShot, yShot, shipsPlayer1))
 				gameMapPlayer1[xShot][yShot] = 1
 
 				if not isShipPosition(xShot, yShot, shipsPlayer1):						
