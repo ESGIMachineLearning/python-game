@@ -101,6 +101,10 @@ def isAllShipDead(currentShips):
 			return False
 	return True
 
+"""
+numberOfBoatsAlive
+"""
+
 def numberAliveShips(currentShips):
 
 	ships = currentShips
@@ -109,6 +113,10 @@ def numberAliveShips(currentShips):
 		if ship['life'] > 0:
 			i += 1
 	return i
+
+"""
+Print the game and shot cases
+"""
 
 def print_board(gameMapPlayer1, gameMapPlayer2):
 	print(" 0 1 2 3 4 5 6 7 8 9 || 0 1 2 3 4 5 6 7 8 9")
@@ -124,8 +132,6 @@ def main():
 	playerTurn = True
 
 	while(True):
-			
-		print_board(gameMapPlayer1, gameMapPlayer2)
 
 		if (playerTurn):
 			
@@ -134,7 +140,7 @@ def main():
 				while True:
 					xShot = random.randint(0, config['size'] - 1)
 					yShot = random.randint(0, config['size'] - 1)
-					#print(xShot, yShot)
+
 					if not gameMapPlayer2[xShot][yShot]:
 						break
 
@@ -147,11 +153,12 @@ def main():
 
 					ship = getShip(xShot, yShot, shipsPlayer2)
 					ship['life'] -= 1
-					print('Nombre de navire(s) joueur 2', end = ' : ')
-					print(numberAliveShips(shipsPlayer2))
 
 					if ship['life'] == 0:
+						print_board(gameMapPlayer1, gameMapPlayer2)
 						print('Navire détruit !')
+						print('Nombre de navire(s) joueur 2', end = ' : ')
+						print(numberAliveShips(shipsPlayer2))
 
 					if isAllShipDead(shipsPlayer2):
 						print('Victoire du joueur 1 !!!')
@@ -163,7 +170,7 @@ def main():
 				while True:
 					xShot = random.randint(0, config['size'] - 1)
 					yShot = random.randint(0, config['size'] - 1)
-					#print(xShot, yShot)
+
 					if not gameMapPlayer1[xShot][yShot]:
 						break
 
@@ -176,10 +183,13 @@ def main():
 
 					ship = getShip(xShot, yShot, shipsPlayer1)
 					ship['life'] -= 1
-					print('Nombre de navire(s) joueur 1', end = ' : ')
-					print(numberAliveShips(shipsPlayer1))
+
 					if ship['life'] == 0:
+						print_board(gameMapPlayer1, gameMapPlayer2)
 						print('Navire détruit !')
+						print('Nombre de navire(s) joueur 1', end = ' : ')
+						print(numberAliveShips(shipsPlayer1))
+						
 					if isAllShipDead(shipsPlayer1):
 						print('Victoire du joueur 2 !!!')
 						quit()
