@@ -9,7 +9,6 @@ class VictorPilleur:
 		self.target = []
 
 	def controller(self, gameMap):
-		
 		#premier coup
 		if len(self.log) == 0:
 			self.lastShot = self.getRandom()
@@ -19,7 +18,15 @@ class VictorPilleur:
 			self.target = []
 			self.setTarget(self.log[-1][0], self.log[-1][1])
 			self.clearTarget()
-			if len(self.target ) == 0:
+			if len(self.target) == 0:
+				self.lastShot = self.getRandom()
+				return self.lastShot
+			self.lastShot = self.target[random.randint(0, len(self.target) - 1)]
+			return self.lastShot
+		# si il reste des cibles
+		elif len(self.target) > 0:
+			self.clearTarget()
+			if len(self.target) == 0:
 				self.lastShot = self.getRandom()
 				return self.lastShot
 			self.lastShot = self.target[random.randint(0, len(self.target) - 1)]
@@ -41,8 +48,7 @@ class VictorPilleur:
 		for log in self.log:
 			if log[0] == x and log[1] == y:
 				return True
-			else:
-				return False
+		return False
 
 	# alimente la liste de position cible
 	def setTarget(self, x, y):

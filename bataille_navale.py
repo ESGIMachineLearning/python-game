@@ -11,7 +11,7 @@ config = {
 	},
 	"ship_one_beside_other": False,
 	"aiPlayer1": "victorPilleur",
-	"aiPlayer2": "victorPilleur"
+	"aiPlayer2": "naïve"
 }
 
 def initMap():
@@ -140,7 +140,6 @@ def main():
 	shipsPlayer1, gameMapPlayer1 = initMap()
 	shipsPlayer2, gameMapPlayer2 = initMap()
 	IA1 = victorPilleur.VictorPilleur(config)
-	IA2 = victorPilleur.VictorPilleur(config)
 	shipsTouch1 = []
 	shipsTouch2 = []
 	playerTurn = True
@@ -175,11 +174,16 @@ def main():
 					playerTurn = not playerTurn
 		else :
 				
-			if (config['aiPlayer2'] == 'victorPilleur'):
+			if (config['aiPlayer2'] == 'naïve'):
 				
 
-				xShot, yShot = IA2.controller(gameMapPlayer1)
-				IA2.transferAnswer(isShipPosition(xShot, yShot, shipsPlayer1))
+				while True:
+					xShot = random.randint(0, config['size'] - 1)
+					yShot = random.randint(0, config['size'] - 1)
+					
+					if not gameMapPlayer1[xShot][yShot]:
+						break
+
 				gameMapPlayer1[xShot][yShot] = 1
 
 				if not isShipPosition(xShot, yShot, shipsPlayer1):						
