@@ -18,6 +18,7 @@ class VictorPilleur:
 		elif self.log[-1][2] == True:
 			self.target = []
 			self.setTarget(self.log[-1][0], self.log[-1][1])
+			self.clearTarget()
 			if len(self.target ) == 0:
 				self.lastShot = self.getRandom()
 				return self.lastShot
@@ -67,12 +68,6 @@ class VictorPilleur:
 			self.target.append((x + 1, y))
 			self.target.append((x, y + 1))
 
-		
-		i = 0
-		while i < len(self.target):
-			if self.isAlreadyTest(self.target[i][0], self.target[i][1]) or self.target[i][0] > self.config["size"] - 1 or self.target[i][1] > self.config["size"] - 1 or self.target[i][0] < 0 or self.target[i][1] < 0:
-				del self.target[i]
-			i += 1
 
 	# retourne une case de la zone la moins bombardé
 	def getRandom(self):
@@ -108,4 +103,14 @@ class VictorPilleur:
 			indMinOrd = random.randint(0, self.config["size"] - 1)
 
 		return indMinAbs, indMinOrd
+
+	def clearTarget(self):
+		i = 0
+		while i < len(self.target):
+			if self.isAlreadyTest(self.target[i][0], self.target[i][1]) or self.target[i][0] > self.config["size"] - 1 or self.target[i][1] > self.config["size"] - 1 or self.target[i][0] < 0 or self.target[i][1] < 0:
+				del self.target[i]
+				i -= 1
+			i += 1
+
+
 
